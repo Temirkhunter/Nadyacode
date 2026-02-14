@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Надюшенька</title>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&family=JetBrains+Mono:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -20,9 +20,10 @@
             align-items: center;
             overflow: hidden;
             font-family: 'JetBrains Mono', monospace;
+            perspective: 1000px;
         }
 
-        /* Тонкая сетка на фоне */
+        /* Сетка на фоне */
         body::before {
             content: '';
             position: fixed;
@@ -31,108 +32,240 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
+                linear-gradient(rgba(255, 107, 129, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 107, 129, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
             pointer-events: none;
         }
 
-        .container {
-            position: relative;
+        .scene {
+            width: 400px;
+            height: 400px;
+            perspective: 1000px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .heart-wrapper {
+        .heart-3d {
             position: relative;
             width: 320px;
             height: 320px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            transform-style: preserve-3d;
+            animation: rotate3d 12s ease-in-out infinite;
         }
 
-        /* Главное сердце */
-        .heart {
-            position: relative;
+        @keyframes rotate3d {
+            0% { 
+                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); 
+            }
+            25% { 
+                transform: rotateX(10deg) rotateY(15deg) rotateZ(5deg); 
+            }
+            50% { 
+                transform: rotateX(-5deg) rotateY(-10deg) rotateZ(-3deg); 
+            }
+            75% { 
+                transform: rotateX(8deg) rotateY(-15deg) rotateZ(5deg); 
+            }
+            100% { 
+                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); 
+            }
+        }
+
+        /* Слои 3D сердца */
+        .heart-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 280px;
-            height: 260px;
+            height: 280px;
+            transform-style: preserve-3d;
+        }
+
+        .heart-layer:nth-child(1) { transform: translate(-50%, -50%) translateZ(0px); }
+        .heart-layer:nth-child(2) { transform: translate(-50%, -50%) translateZ(15px); opacity: 0.8; }
+        .heart-layer:nth-child(3) { transform: translate(-50%, -50%) translateZ(30px); opacity: 0.6; }
+        .heart-layer:nth-child(4) { transform: translate(-50%, -50%) translateZ(-15px); opacity: 0.7; }
+        .heart-layer:nth-child(5) { transform: translate(-50%, -50%) translateZ(-30px); opacity: 0.5; }
+
+        .heart {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        /* SVG сердце для точной формы */
+        .heart-shape {
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             align-content: center;
-            clip-path: path('M140,30 C95,-15 0,25 0,95 C0,165 140,260 140,260 C140,260 280,165 280,95 C280,25 185,-15 140,30 Z');
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+            gap: 2px;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,88 C50,88 5,55 5,30 C5,12 20,2 35,2 C45,2 50,10 50,10 C50,10 55,2 65,2 C80,2 95,12 95,30 C95,55 50,88 50,88 Z'/%3E%3C/svg%3E");
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,88 C50,88 5,55 5,30 C5,12 20,2 35,2 C45,2 50,10 50,10 C50,10 55,2 65,2 C80,2 95,12 95,30 C95,55 50,88 50,88 Z'/%3E%3C/svg%3E");
+            -webkit-mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-position: center;
         }
 
         /* Цифры кода */
         .bit {
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            font-weight: 300;
-            color: rgba(255, 107, 129, 0.7);
-            line-height: 1.4;
-            letter-spacing: 2px;
+            font-weight: 400;
+            color: #ff6b81;
+            text-shadow: 0 0 5px rgba(255, 107, 129, 0.5);
             transition: all 0.3s ease;
+            animation: flicker 3s ease-in-out infinite;
         }
 
-        .bit:hover {
-            color: rgba(255, 107, 129, 1);
-            text-shadow: 0 0 8px rgba(255, 107, 129, 0.5);
+        .bit:nth-child(odd) {
+            animation-delay: -1.5s;
+        }
+
+        .bit:nth-child(3n) {
+            color: #ff8fa3;
+            text-shadow: 0 0 8px rgba(255, 107, 129, 0.7);
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
         }
 
         .bit.zero {
-            color: rgba(255, 107, 129, 0.3);
+            color: rgba(255, 107, 129, 0.4);
+            text-shadow: none;
         }
 
-        /* Тонкий контур сердца */
-        .heart-outline {
+        .bit:hover {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 107, 129, 1);
+        }
+
+        /* Светящийся контур сердца */
+        .heart-glow {
             position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 300px;
-            height: 280px;
-            border: 1px solid rgba(255, 107, 129, 0.15);
-            clip-path: path('M150,32 C102,-15 0,27 0,100 C0,173 150,275 150,275 C150,275 300,173 300,100 C300,27 198,-15 150,32 Z');
-            animation: outline-pulse 4s ease-in-out infinite;
+            height: 300px;
+            background: transparent;
+            filter: blur(20px);
+            opacity: 0.3;
+            animation: glow-pulse 3s ease-in-out infinite;
         }
 
-        @keyframes outline-pulse {
-            0%, 100% { 
-                transform: scale(1.05);
-                opacity: 0.3;
-            }
-            50% { 
-                transform: scale(1.1);
-                opacity: 0.1;
-            }
+        .heart-glow::before {
+            content: '❤';
+            font-size: 280px;
+            color: #ff6b81;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -55%);
         }
 
-        /* Второй контур */
-        .heart-outline-2 {
-            animation-delay: -2s;
-            border-color: rgba(255, 107, 129, 0.08);
+        @keyframes glow-pulse {
+            0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.05); }
         }
+
+        /* Орбитальные кольца */
+        .orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 1px solid rgba(255, 107, 129, 0.2);
+            border-radius: 50%;
+            transform-style: preserve-3d;
+        }
+
+        .orbit-1 {
+            width: 350px;
+            height: 350px;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            animation: orbit-spin 8s linear infinite;
+        }
+
+        .orbit-2 {
+            width: 380px;
+            height: 380px;
+            transform: translate(-50%, -50%) rotateX(75deg) rotateY(20deg);
+            animation: orbit-spin 12s linear infinite reverse;
+        }
+
+        .orbit-3 {
+            width: 320px;
+            height: 320px;
+            transform: translate(-50%, -50%) rotateY(75deg);
+            animation: orbit-spin 10s linear infinite;
+        }
+
+        @keyframes orbit-spin {
+            from { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(0deg); }
+            to { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg); }
+        }
+
+        /* Точки на орбитах */
+        .orbit-dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff6b81;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff6b81, 0 0 20px #ff6b81;
+        }
+
+        .orbit-1 .orbit-dot { top: -2px; left: 50%; }
+        .orbit-2 .orbit-dot { top: 50%; right: -2px; }
+        .orbit-3 .orbit-dot { bottom: -2px; left: 50%; }
 
         /* Центральный блок с именем */
         .name-block {
             position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateZ(50px);
             text-align: center;
-            z-index: 10;
+            z-index: 100;
+            pointer-events: none;
         }
 
         .name {
             font-family: 'Raleway', sans-serif;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 300;
-            letter-spacing: 4px;
+            letter-spacing: 5px;
             color: #fff;
             text-transform: uppercase;
-            position: relative;
+            text-shadow: 
+                0 0 10px rgba(255, 107, 129, 0.8),
+                0 0 20px rgba(255, 107, 129, 0.5),
+                0 0 40px rgba(255, 107, 129, 0.3);
+            animation: name-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes name-glow {
+            0%, 100% { 
+                text-shadow: 
+                    0 0 10px rgba(255, 107, 129, 0.8),
+                    0 0 20px rgba(255, 107, 129, 0.5);
+            }
+            50% { 
+                text-shadow: 
+                    0 0 15px rgba(255, 107, 129, 1),
+                    0 0 30px rgba(255, 107, 129, 0.8),
+                    0 0 50px rgba(255, 107, 129, 0.5);
+            }
         }
 
         .name::before,
@@ -140,49 +273,48 @@
             content: '';
             position: absolute;
             top: 50%;
-            width: 30px;
+            width: 40px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 107, 129, 0.5));
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 129, 0.8));
         }
 
         .name::before {
             right: 100%;
             margin-right: 15px;
-            background: linear-gradient(90deg, transparent, rgba(255, 107, 129, 0.5));
         }
 
         .name::after {
             left: 100%;
             margin-left: 15px;
-            background: linear-gradient(90deg, rgba(255, 107, 129, 0.5), transparent);
+            background: linear-gradient(90deg, rgba(255, 107, 129, 0.8), transparent);
         }
 
         .subtitle {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 300;
             letter-spacing: 3px;
-            color: rgba(255, 107, 129, 0.5);
-            margin-top: 8px;
+            color: rgba(255, 107, 129, 0.7);
+            margin-top: 10px;
             text-transform: uppercase;
         }
 
         /* Угловые маркеры */
         .corner {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            border-color: rgba(255, 107, 129, 0.2);
+            width: 25px;
+            height: 25px;
+            border-color: rgba(255, 107, 129, 0.4);
             border-style: solid;
             border-width: 0;
         }
 
-        .corner-tl { top: -30px; left: -30px; border-top-width: 1px; border-left-width: 1px; }
-        .corner-tr { top: -30px; right: -30px; border-top-width: 1px; border-right-width: 1px; }
-        .corner-bl { bottom: -30px; left: -30px; border-bottom-width: 1px; border-left-width: 1px; }
-        .corner-br { bottom: -30px; right: -30px; border-bottom-width: 1px; border-right-width: 1px; }
+        .corner-tl { top: -40px; left: -40px; border-top-width: 1px; border-left-width: 1px; }
+        .corner-tr { top: -40px; right: -40px; border-top-width: 1px; border-right-width: 1px; }
+        .corner-bl { bottom: -40px; left: -40px; border-bottom-width: 1px; border-left-width: 1px; }
+        .corner-br { bottom: -40px; right: -40px; border-bottom-width: 1px; border-right-width: 1px; }
 
-        /* Минимальные частицы */
+        /* Частицы */
         .particles {
             position: fixed;
             width: 100%;
@@ -194,101 +326,188 @@
         .particle {
             position: absolute;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            color: rgba(255, 107, 129, 0.3);
+            font-size: 12px;
+            color: #ff6b81;
             opacity: 0;
-            animation: rise 8s linear infinite;
+            text-shadow: 0 0 5px #ff6b81;
+            animation: rise 6s linear infinite;
         }
 
         @keyframes rise {
-            0% {
-                opacity: 0;
-                transform: translateY(100vh);
-            }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
+            0% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-20px) rotate(180deg); }
         }
 
-        /* Сканирующая линия */
-        .scan-line {
+        /* Сканирующие линии */
+        .scan-h, .scan-v {
             position: absolute;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 107, 129, 0.3), 
-                transparent
-            );
-            animation: scan 4s ease-in-out infinite;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 129, 0.5), transparent);
             pointer-events: none;
         }
 
-        @keyframes scan {
-            0%, 100% { top: 20%; opacity: 0; }
-            10% { opacity: 0.5; }
-            50% { top: 80%; opacity: 0.5; }
-            60% { opacity: 0; }
+        .scan-h {
+            width: 100%;
+            height: 2px;
+            animation: scan-horizontal 4s ease-in-out infinite;
+        }
+
+        .scan-v {
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, rgba(255, 107, 129, 0.5), transparent);
+            animation: scan-vertical 5s ease-in-out infinite;
+        }
+
+        @keyframes scan-horizontal {
+            0%, 100% { top: 10%; opacity: 0; }
+            10%, 90% { opacity: 0.8; }
+            50% { top: 90%; }
+        }
+
+        @keyframes scan-vertical {
+            0%, 100% { left: 10%; opacity: 0; }
+            10%, 90% { opacity: 0.8; }
+            50% { left: 90%; }
         }
 
         /* Координаты */
         .coords {
             position: fixed;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 9px;
-            color: rgba(255, 107, 129, 0.2);
+            font-size: 10px;
+            color: rgba(255, 107, 129, 0.4);
             letter-spacing: 1px;
         }
 
         .coords-top { top: 20px; left: 20px; }
         .coords-bottom { bottom: 20px; right: 20px; }
 
-        /* Эффект при клике */
-        .click-effect {
+        /* Статус */
+        .status {
             position: fixed;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 107, 129, 0.8);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: click-ripple 0.6s ease-out forwards;
+            bottom: 20px;
+            left: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 107, 129, 0.5);
         }
 
-        @keyframes click-ripple {
-            0% {
-                transform: scale(1);
-                opacity: 1;
+        .status-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #ff6b81;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Пульсирующий эффект сердца */
+        .pulse-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;
+            height: 250px;
+            border: 1px solid rgba(255, 107, 129, 0.3);
+            border-radius: 50%;
+            animation: pulse-expand 2s ease-out infinite;
+        }
+
+        .pulse-ring:nth-child(2) { animation-delay: 0.5s; }
+        .pulse-ring:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes pulse-expand {
+            0% { 
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0.5;
             }
-            100% {
-                transform: scale(40);
+            100% { 
+                transform: translate(-50%, -50%) scale(1.5);
                 opacity: 0;
             }
+        }
+
+        /* Эффект клика */
+        .click-burst {
+            position: fixed;
+            pointer-events: none;
+            font-size: 20px;
+            animation: burst 0.8s ease-out forwards;
+        }
+
+        @keyframes burst {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
         }
     </style>
 </head>
 <body>
     <div class="particles" id="particles"></div>
+    <div class="scan-h"></div>
+    <div class="scan-v"></div>
     
-    <div class="coords coords-top">52.2297° N</div>
-    <div class="coords coords-bottom">21.0122° E</div>
+    <div class="coords coords-top">SYS.HEART.3D</div>
+    <div class="coords coords-bottom">LOVE://ACTIVE</div>
+    <div class="status"><span class="status-dot"></span>RENDERING</div>
 
-    <div class="container">
-        <div class="heart-wrapper">
+    <div class="scene">
+        <div class="heart-3d" id="heart3d">
+            <!-- Угловые маркеры -->
             <div class="corner corner-tl"></div>
             <div class="corner corner-tr"></div>
             <div class="corner corner-bl"></div>
             <div class="corner corner-br"></div>
-            
-            <div class="heart-outline"></div>
-            <div class="heart-outline heart-outline-2"></div>
-            
-            <div class="heart" id="heart">
-                <div class="scan-line"></div>
+
+            <!-- Пульсирующие кольца -->
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring"></div>
+
+            <!-- Орбиты -->
+            <div class="orbit orbit-1"><div class="orbit-dot"></div></div>
+            <div class="orbit orbit-2"><div class="orbit-dot"></div></div>
+            <div class="orbit orbit-3"><div class="orbit-dot"></div></div>
+
+            <!-- Свечение -->
+            <div class="heart-glow"></div>
+
+            <!-- 3D слои сердца -->
+            <div class="heart-layer">
+                <div class="heart">
+                    <div class="heart-shape" id="heart1"></div>
+                </div>
             </div>
-            
+            <div class="heart-layer">
+                <div class="heart">
+                    <div class="heart-shape" id="heart2"></div>
+                </div>
+            </div>
+            <div class="heart-layer">
+                <div class="heart">
+                    <div class="heart-shape" id="heart3"></div>
+                </div>
+            </div>
+            <div class="heart-layer">
+                <div class="heart">
+                    <div class="heart-shape" id="heart4"></div>
+                </div>
+            </div>
+            <div class="heart-layer">
+                <div class="heart">
+                    <div class="heart-shape" id="heart5"></div>
+                </div>
+            </div>
+
+            <!-- Имя -->
             <div class="name-block">
                 <div class="name">Надюшенька</div>
                 <div class="subtitle">// with love</div>
@@ -297,65 +516,90 @@
     </div>
 
     <script>
-        // Генерация бинарного кода в сердце
-        function generateHeart() {
-            const heart = document.getElementById('heart');
-            const scanLine = heart.querySelector('.scan-line');
+        // Генерация бинарного кода
+        function fillHeart(id, count) {
+            const heart = document.getElementById(id);
+            if (!heart) return;
             let html = '';
-            
-            for (let i = 0; i < 320; i++) {
-                const isOne = Math.random() > 0.5;
+            for (let i = 0; i < count; i++) {
+                const isOne = Math.random() > 0.4;
                 const className = isOne ? 'bit' : 'bit zero';
                 html += '<span class="' + className + '">' + (isOne ? '1' : '0') + '</span>';
             }
-            
             heart.innerHTML = html;
-            heart.appendChild(scanLine);
         }
 
-        generateHeart();
+        fillHeart('heart1', 280);
+        fillHeart('heart2', 260);
+        fillHeart('heart3', 240);
+        fillHeart('heart4', 250);
+        fillHeart('heart5', 230);
 
-        // Минималистичные частицы
+        // Частицы
         function createParticle() {
             const particles = document.getElementById('particles');
             const particle = document.createElement('span');
             particle.className = 'particle';
-            particle.textContent = Math.random() > 0.7 ? '1' : '0';
+            particle.textContent = Math.random() > 0.6 ? '1' : '0';
             particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDuration = (6 + Math.random() * 6) + 's';
+            particle.style.animationDuration = (4 + Math.random() * 4) + 's';
+            particle.style.fontSize = (10 + Math.random() * 8) + 'px';
             particles.appendChild(particle);
-            
-            setTimeout(function() { 
-                particle.remove(); 
-            }, 12000);
+            setTimeout(function() { particle.remove(); }, 8000);
         }
 
-        // Меньше частиц для минимализма
-        setInterval(createParticle, 800);
+        setInterval(createParticle, 500);
+        for (let i = 0; i < 20; i++) setTimeout(createParticle, i * 100);
 
-        // Эффект клика
-        document.addEventListener('click', function(e) {
-            const effect = document.createElement('div');
-            effect.className = 'click-effect';
-            effect.style.left = e.clientX + 'px';
-            effect.style.top = e.clientY + 'px';
-            document.body.appendChild(effect);
-            
-            setTimeout(function() {
-                effect.remove();
-            }, 600);
-        });
-
-        // Периодическое обновление кода
+        // Динамическое обновление битов
         setInterval(function() {
             const bits = document.querySelectorAll('.bit');
-            const randomBit = bits[Math.floor(Math.random() * bits.length)];
-            if (randomBit) {
-                const isOne = randomBit.textContent === '1';
-                randomBit.textContent = isOne ? '0' : '1';
-                randomBit.className = isOne ? 'bit zero' : 'bit';
+            for (let i = 0; i < 3; i++) {
+                const randomBit = bits[Math.floor(Math.random() * bits.length)];
+                if (randomBit) {
+                    const isOne = randomBit.textContent === '1';
+                    randomBit.textContent = isOne ? '0' : '1';
+                    randomBit.className = isOne ? 'bit zero' : 'bit';
+                }
             }
-        }, 100);
+        }, 80);
+
+        // Клик — взрыв символов
+        document.getElementById('heart3d').addEventListener('click', function(e) {
+            const symbols = ['❤', '1', '0', '♥', '💗'];
+            for (let i = 0; i < 20; i++) {
+                setTimeout(function() {
+                    const el = document.createElement('div');
+                    el.className = 'click-burst';
+                    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    el.style.left = e.clientX + (Math.random() - 0.5) * 100 + 'px';
+                    el.style.top = e.clientY + (Math.random() - 0.5) * 100 + 'px';
+                    el.style.color = '#ff6b81';
+                    document.body.appendChild(el);
+                    setTimeout(function() { el.remove(); }, 800);
+                }, i * 30);
+            }
+        });
+
+        // Интерактивное вращение мышью
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', function(e) {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 20;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 20;
+        });
+
+        const heart3d = document.getElementById('heart3d');
+        let currentX = 0, currentY = 0;
+
+        function animateRotation() {
+            currentX += (mouseY - currentX) * 0.05;
+            currentY += (mouseX - currentY) * 0.05;
+            heart3d.style.transform = 'rotateX(' + currentX + 'deg) rotateY(' + currentY + 'deg)';
+            requestAnimationFrame(animateRotation);
+        }
+
+        // Раскомментируй следующую строку для управления мышью вместо автовращения:
+        // animateRotation();
     </script>
 </body>
 </html>
