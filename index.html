@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Надюшенька</title>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <title>Armored Titan | Digital Art</title>
     <style>
         * {
             margin: 0;
@@ -13,593 +12,378 @@
         }
 
         body {
-            min-height: 100vh;
             background: #0a0a0f;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-family: 'Courier New', monospace;
             overflow: hidden;
-            font-family: 'JetBrains Mono', monospace;
-            perspective: 1000px;
         }
 
-        /* Сетка на фоне */
-        body::before {
-            content: '';
-            position: fixed;
+        .container {
+            position: relative;
+            width: 600px;
+            height: 800px;
+        }
+
+        .titan-canvas {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                linear-gradient(rgba(255, 107, 129, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 107, 129, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
         }
 
-        .scene {
-            width: 400px;
-            height: 400px;
-            perspective: 1000px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .heart-3d {
-            position: relative;
-            width: 320px;
-            height: 320px;
-            transform-style: preserve-3d;
-            animation: rotate3d 12s ease-in-out infinite;
-        }
-
-        @keyframes rotate3d {
-            0% { 
-                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); 
-            }
-            25% { 
-                transform: rotateX(10deg) rotateY(15deg) rotateZ(5deg); 
-            }
-            50% { 
-                transform: rotateX(-5deg) rotateY(-10deg) rotateZ(-3deg); 
-            }
-            75% { 
-                transform: rotateX(8deg) rotateY(-15deg) rotateZ(5deg); 
-            }
-            100% { 
-                transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); 
-            }
-        }
-
-        /* Слои 3D сердца */
-        .heart-layer {
+        .digit {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 280px;
-            height: 280px;
-            transform-style: preserve-3d;
-        }
-
-        .heart-layer:nth-child(1) { transform: translate(-50%, -50%) translateZ(0px); }
-        .heart-layer:nth-child(2) { transform: translate(-50%, -50%) translateZ(15px); opacity: 0.8; }
-        .heart-layer:nth-child(3) { transform: translate(-50%, -50%) translateZ(30px); opacity: 0.6; }
-        .heart-layer:nth-child(4) { transform: translate(-50%, -50%) translateZ(-15px); opacity: 0.7; }
-        .heart-layer:nth-child(5) { transform: translate(-50%, -50%) translateZ(-30px); opacity: 0.5; }
-
-        .heart {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        /* SVG сердце для точной формы */
-        .heart-shape {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-content: center;
-            gap: 2px;
-            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,88 C50,88 5,55 5,30 C5,12 20,2 35,2 C45,2 50,10 50,10 C50,10 55,2 65,2 C80,2 95,12 95,30 C95,55 50,88 50,88 Z'/%3E%3C/svg%3E");
-            mask-size: contain;
-            mask-repeat: no-repeat;
-            mask-position: center;
-            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,88 C50,88 5,55 5,30 C5,12 20,2 35,2 C45,2 50,10 50,10 C50,10 55,2 65,2 C80,2 95,12 95,30 C95,55 50,88 50,88 Z'/%3E%3C/svg%3E");
-            -webkit-mask-size: contain;
-            -webkit-mask-repeat: no-repeat;
-            -webkit-mask-position: center;
-        }
-
-        /* Цифры кода */
-        .bit {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            font-weight: 400;
-            color: #ff6b81;
-            text-shadow: 0 0 5px rgba(255, 107, 129, 0.5);
+            font-weight: bold;
+            text-shadow: 0 0 10px currentColor;
+            animation: pulse 2s ease-in-out infinite;
             transition: all 0.3s ease;
-            animation: flicker 3s ease-in-out infinite;
         }
 
-        .bit:nth-child(odd) {
-            animation-delay: -1.5s;
+        .digit:hover {
+            transform: scale(1.5);
+            text-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
         }
 
-        .bit:nth-child(3n) {
-            color: #ff8fa3;
-            text-shadow: 0 0 8px rgba(255, 107, 129, 0.7);
+        /* Цветовые классы для брони */
+        .armor-gold {
+            color: #d4a574;
+            text-shadow: 0 0 8px #d4a574, 0 0 15px #8b6914;
         }
 
-        @keyframes flicker {
+        .armor-dark {
+            color: #4a3728;
+            text-shadow: 0 0 5px #4a3728;
+        }
+
+        .armor-highlight {
+            color: #f5d79e;
+            text-shadow: 0 0 12px #f5d79e, 0 0 25px #d4a574;
+        }
+
+        .armor-red {
+            color: #8b0000;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #8b0000;
+        }
+
+        .armor-shadow {
+            color: #1a1a1a;
+            text-shadow: 0 0 3px #333;
+        }
+
+        .eye {
+            color: #00ff88;
+            text-shadow: 0 0 15px #00ff88, 0 0 30px #00ff88, 0 0 45px #00ff88;
+            animation: eyeGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
             0%, 100% { opacity: 0.8; }
             50% { opacity: 1; }
         }
 
-        .bit.zero {
-            color: rgba(255, 107, 129, 0.4);
-            text-shadow: none;
-        }
-
-        .bit:hover {
-            color: #fff;
-            text-shadow: 0 0 15px rgba(255, 107, 129, 1);
-        }
-
-        /* Светящийся контур сердца */
-        .heart-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
-            background: transparent;
-            filter: blur(20px);
-            opacity: 0.3;
-            animation: glow-pulse 3s ease-in-out infinite;
-        }
-
-        .heart-glow::before {
-            content: '❤';
-            font-size: 280px;
-            color: #ff6b81;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -55%);
-        }
-
-        @keyframes glow-pulse {
-            0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.05); }
-        }
-
-        /* Орбитальные кольца */
-        .orbit {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            border: 1px solid rgba(255, 107, 129, 0.2);
-            border-radius: 50%;
-            transform-style: preserve-3d;
-        }
-
-        .orbit-1 {
-            width: 350px;
-            height: 350px;
-            transform: translate(-50%, -50%) rotateX(75deg);
-            animation: orbit-spin 8s linear infinite;
-        }
-
-        .orbit-2 {
-            width: 380px;
-            height: 380px;
-            transform: translate(-50%, -50%) rotateX(75deg) rotateY(20deg);
-            animation: orbit-spin 12s linear infinite reverse;
-        }
-
-        .orbit-3 {
-            width: 320px;
-            height: 320px;
-            transform: translate(-50%, -50%) rotateY(75deg);
-            animation: orbit-spin 10s linear infinite;
-        }
-
-        @keyframes orbit-spin {
-            from { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(0deg); }
-            to { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg); }
-        }
-
-        /* Точки на орбитах */
-        .orbit-dot {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: #ff6b81;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #ff6b81, 0 0 20px #ff6b81;
-        }
-
-        .orbit-1 .orbit-dot { top: -2px; left: 50%; }
-        .orbit-2 .orbit-dot { top: 50%; right: -2px; }
-        .orbit-3 .orbit-dot { bottom: -2px; left: 50%; }
-
-        /* Центральный блок с именем */
-        .name-block {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) translateZ(50px);
-            text-align: center;
-            z-index: 100;
-            pointer-events: none;
-        }
-
-        .name {
-            font-family: 'Raleway', sans-serif;
-            font-size: 24px;
-            font-weight: 300;
-            letter-spacing: 5px;
-            color: #fff;
-            text-transform: uppercase;
-            text-shadow: 
-                0 0 10px rgba(255, 107, 129, 0.8),
-                0 0 20px rgba(255, 107, 129, 0.5),
-                0 0 40px rgba(255, 107, 129, 0.3);
-            animation: name-glow 2s ease-in-out infinite;
-        }
-
-        @keyframes name-glow {
-            0%, 100% { 
-                text-shadow: 
-                    0 0 10px rgba(255, 107, 129, 0.8),
-                    0 0 20px rgba(255, 107, 129, 0.5);
+        @keyframes eyeGlow {
+            0% { 
+                text-shadow: 0 0 15px #00ff88, 0 0 30px #00ff88;
+                transform: scale(1);
             }
-            50% { 
-                text-shadow: 
-                    0 0 15px rgba(255, 107, 129, 1),
-                    0 0 30px rgba(255, 107, 129, 0.8),
-                    0 0 50px rgba(255, 107, 129, 0.5);
+            100% { 
+                text-shadow: 0 0 25px #00ff88, 0 0 50px #00ff88, 0 0 75px #00ff88;
+                transform: scale(1.1);
             }
         }
 
-        .name::before,
-        .name::after {
-            content: '';
+        @keyframes steam {
+            0% { opacity: 0; transform: translateY(0) scale(1); }
+            50% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-30px) scale(1.5); }
+        }
+
+        .steam {
+            color: #ffffff;
+            animation: steam 2s ease-out infinite;
+        }
+
+        /* Фоновые эффекты */
+        .bg-particles {
             position: absolute;
-            top: 50%;
-            width: 40px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255, 107, 129, 0.8));
-        }
-
-        .name::before {
-            right: 100%;
-            margin-right: 15px;
-        }
-
-        .name::after {
-            left: 100%;
-            margin-left: 15px;
-            background: linear-gradient(90deg, rgba(255, 107, 129, 0.8), transparent);
-        }
-
-        .subtitle {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            font-weight: 300;
-            letter-spacing: 3px;
-            color: rgba(255, 107, 129, 0.7);
-            margin-top: 10px;
-            text-transform: uppercase;
-        }
-
-        /* Угловые маркеры */
-        .corner {
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            border-color: rgba(255, 107, 129, 0.4);
-            border-style: solid;
-            border-width: 0;
-        }
-
-        .corner-tl { top: -40px; left: -40px; border-top-width: 1px; border-left-width: 1px; }
-        .corner-tr { top: -40px; right: -40px; border-top-width: 1px; border-right-width: 1px; }
-        .corner-bl { bottom: -40px; left: -40px; border-bottom-width: 1px; border-left-width: 1px; }
-        .corner-br { bottom: -40px; right: -40px; border-bottom-width: 1px; border-right-width: 1px; }
-
-        /* Частицы */
-        .particles {
-            position: fixed;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            overflow: hidden;
         }
 
         .particle {
             position: absolute;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            color: #ff6b81;
-            opacity: 0;
-            text-shadow: 0 0 5px #ff6b81;
-            animation: rise 6s linear infinite;
+            color: #d4a574;
+            opacity: 0.3;
+            animation: float 4s ease-in-out infinite;
         }
 
-        @keyframes rise {
-            0% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { opacity: 0; transform: translateY(-20px) rotate(180deg); }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
         }
 
-        /* Сканирующие линии */
-        .scan-h, .scan-v {
+        /* Заголовок */
+        .title {
             position: absolute;
-            background: linear-gradient(90deg, transparent, rgba(255, 107, 129, 0.5), transparent);
-            pointer-events: none;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #d4a574;
+            font-size: 14px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            opacity: 0.7;
         }
 
-        .scan-h {
+        /* Сканирующая линия */
+        .scan-line {
+            position: absolute;
             width: 100%;
             height: 2px;
-            animation: scan-horizontal 4s ease-in-out infinite;
+            background: linear-gradient(90deg, transparent, #d4a574, transparent);
+            animation: scan 3s linear infinite;
+            opacity: 0.5;
         }
 
-        .scan-v {
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(180deg, transparent, rgba(255, 107, 129, 0.5), transparent);
-            animation: scan-vertical 5s ease-in-out infinite;
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
         }
 
-        @keyframes scan-horizontal {
-            0%, 100% { top: 10%; opacity: 0; }
-            10%, 90% { opacity: 0.8; }
-            50% { top: 90%; }
-        }
-
-        @keyframes scan-vertical {
-            0%, 100% { left: 10%; opacity: 0; }
-            10%, 90% { opacity: 0.8; }
-            50% { left: 90%; }
-        }
-
-        /* Координаты */
-        .coords {
-            position: fixed;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            color: rgba(255, 107, 129, 0.4);
-            letter-spacing: 1px;
-        }
-
-        .coords-top { top: 20px; left: 20px; }
-        .coords-bottom { bottom: 20px; right: 20px; }
-
-        /* Статус */
-        .status {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            color: rgba(255, 107, 129, 0.5);
-        }
-
-        .status-dot {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background: #ff6b81;
-            border-radius: 50%;
-            margin-right: 8px;
-            animation: blink 1s ease-in-out infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* Пульсирующий эффект сердца */
-        .pulse-ring {
+        /* Рамка */
+        .frame {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 250px;
-            height: 250px;
-            border: 1px solid rgba(255, 107, 129, 0.3);
-            border-radius: 50%;
-            animation: pulse-expand 2s ease-out infinite;
-        }
-
-        .pulse-ring:nth-child(2) { animation-delay: 0.5s; }
-        .pulse-ring:nth-child(3) { animation-delay: 1s; }
-
-        @keyframes pulse-expand {
-            0% { 
-                transform: translate(-50%, -50%) scale(0.8);
-                opacity: 0.5;
-            }
-            100% { 
-                transform: translate(-50%, -50%) scale(1.5);
-                opacity: 0;
-            }
-        }
-
-        /* Эффект клика */
-        .click-burst {
-            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #d4a57430;
             pointer-events: none;
-            font-size: 20px;
-            animation: burst 0.8s ease-out forwards;
         }
 
-        @keyframes burst {
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
+        .frame::before,
+        .frame::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d4a574;
+        }
+
+        .frame::before {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .frame::after {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
         }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
-    <div class="scan-h"></div>
-    <div class="scan-v"></div>
-    
-    <div class="coords coords-top">SYS.HEART.3D</div>
-    <div class="coords coords-bottom">LOVE://ACTIVE</div>
-    <div class="status"><span class="status-dot"></span>RENDERING</div>
-
-    <div class="scene">
-        <div class="heart-3d" id="heart3d">
-            <!-- Угловые маркеры -->
-            <div class="corner corner-tl"></div>
-            <div class="corner corner-tr"></div>
-            <div class="corner corner-bl"></div>
-            <div class="corner corner-br"></div>
-
-            <!-- Пульсирующие кольца -->
-            <div class="pulse-ring"></div>
-            <div class="pulse-ring"></div>
-            <div class="pulse-ring"></div>
-
-            <!-- Орбиты -->
-            <div class="orbit orbit-1"><div class="orbit-dot"></div></div>
-            <div class="orbit orbit-2"><div class="orbit-dot"></div></div>
-            <div class="orbit orbit-3"><div class="orbit-dot"></div></div>
-
-            <!-- Свечение -->
-            <div class="heart-glow"></div>
-
-            <!-- 3D слои сердца -->
-            <div class="heart-layer">
-                <div class="heart">
-                    <div class="heart-shape" id="heart1"></div>
-                </div>
-            </div>
-            <div class="heart-layer">
-                <div class="heart">
-                    <div class="heart-shape" id="heart2"></div>
-                </div>
-            </div>
-            <div class="heart-layer">
-                <div class="heart">
-                    <div class="heart-shape" id="heart3"></div>
-                </div>
-            </div>
-            <div class="heart-layer">
-                <div class="heart">
-                    <div class="heart-shape" id="heart4"></div>
-                </div>
-            </div>
-            <div class="heart-layer">
-                <div class="heart">
-                    <div class="heart-shape" id="heart5"></div>
-                </div>
-            </div>
-
-            <!-- Имя -->
-            <div class="name-block">
-                <div class="name">Надюшенька</div>
-                <div class="subtitle">// with love</div>
-            </div>
-        </div>
+    <div class="container">
+        <div class="frame"></div>
+        <div class="scan-line"></div>
+        <div class="titan-canvas" id="titanCanvas"></div>
+        <div class="bg-particles" id="particles"></div>
+        <div class="title">鎧の巨人 • Armored Titan</div>
     </div>
 
     <script>
-        // Генерация бинарного кода
-        function fillHeart(id, count) {
-            const heart = document.getElementById(id);
-            if (!heart) return;
-            let html = '';
-            for (let i = 0; i < count; i++) {
-                const isOne = Math.random() > 0.4;
-                const className = isOne ? 'bit' : 'bit zero';
-                html += '<span class="' + className + '">' + (isOne ? '1' : '0') + '</span>';
-            }
-            heart.innerHTML = html;
-        }
+        // Карта Бронированного Титана
+        const titanMap = [
+            // Голова - шлем
+            { x: 50, y: 5, nums: "88888888", class: "armor-highlight", size: 12 },
+            { x: 47, y: 7, nums: "8899998888", class: "armor-gold", size: 11 },
+            { x: 45, y: 9, nums: "899777799988", class: "armor-gold", size: 10 },
+            { x: 44, y: 11, nums: "89977777799988", class: "armor-gold", size: 10 },
+            { x: 43, y: 13, nums: "8997777777799988", class: "armor-dark", size: 10 },
+            
+            // Лицо
+            { x: 44, y: 15, nums: "997", class: "armor-gold", size: 10 },
+            { x: 56, y: 15, nums: "799", class: "armor-gold", size: 10 },
+            { x: 48, y: 15, nums: "00", class: "eye", size: 12 },
+            { x: 54, y: 15, nums: "00", class: "eye", size: 12 },
+            
+            { x: 45, y: 17, nums: "9977777777799", class: "armor-dark", size: 10 },
+            { x: 47, y: 19, nums: "77^^^^77", class: "armor-shadow", size: 9 },
+            { x: 46, y: 21, nums: "997777777799", class: "armor-gold", size: 10 },
+            { x: 48, y: 23, nums: "99999999", class: "armor-highlight", size: 10 },
+            
+            // Шея
+            { x: 47, y: 26, nums: "11111111", class: "armor-red", size: 8 },
+            { x: 46, y: 28, nums: "1177777711", class: "armor-dark", size: 8 },
+            { x: 45, y: 30, nums: "117777777711", class: "armor-gold", size: 9 },
+            
+            // Плечи - левое
+            { x: 25, y: 32, nums: "888888", class: "armor-highlight", size: 14 },
+            { x: 22, y: 34, nums: "8899999988", class: "armor-gold", size: 13 },
+            { x: 20, y: 36, nums: "899777777998", class: "armor-gold", size: 12 },
+            { x: 18, y: 38, nums: "89977777777998", class: "armor-dark", size: 11 },
+            { x: 17, y: 40, nums: "8997777777777998", class: "armor-gold", size: 10 },
+            
+            // Плечи - правое
+            { x: 62, y: 32, nums: "888888", class: "armor-highlight", size: 14 },
+            { x: 62, y: 34, nums: "8899999988", class: "armor-gold", size: 13 },
+            { x: 63, y: 36, nums: "899777777998", class: "armor-gold", size: 12 },
+            { x: 64, y: 38, nums: "89977777777998", class: "armor-dark", size: 11 },
+            { x: 64, y: 40, nums: "8997777777777998", class: "armor-gold", size: 10 },
+            
+            // Грудь - бронепластины
+            { x: 35, y: 33, nums: "8888888888888888", class: "armor-highlight", size: 11 },
+            { x: 33, y: 36, nums: "99977777777777779999", class: "armor-gold", size: 10 },
+            { x: 32, y: 39, nums: "9977777711117777779999", class: "armor-gold", size: 10 },
+            { x: 31, y: 42, nums: "997777711111117777799", class: "armor-dark", size: 10 },
+            { x: 30, y: 45, nums: "9977771111111111777799", class: "armor-gold", size: 10 },
+            { x: 32, y: 48, nums: "99777111111111177799", class: "armor-gold", size: 10 },
+            { x: 33, y: 51, nums: "997771111111117799", class: "armor-dark", size: 10 },
+            { x: 35, y: 54, nums: "9977111111117799", class: "armor-gold", size: 10 },
+            
+            // Пресс - сегменты брони
+            { x: 38, y: 57, nums: "888888888888", class: "armor-highlight", size: 9 },
+            { x: 37, y: 59, nums: "99777777779999", class: "armor-gold", size: 9 },
+            { x: 38, y: 61, nums: "9977777777999", class: "armor-dark", size: 9 },
+            { x: 39, y: 63, nums: "997777777799", class: "armor-gold", size: 9 },
+            { x: 38, y: 65, nums: "88888888888888", class: "armor-highlight", size: 8 },
+            { x: 37, y: 67, nums: "9977777777779999", class: "armor-gold", size: 8 },
+            { x: 38, y: 69, nums: "99777777777999", class: "armor-dark", size: 8 },
+            
+            // Руки - левая
+            { x: 15, y: 42, nums: "99988", class: "armor-gold", size: 10 },
+            { x: 13, y: 45, nums: "9997788", class: "armor-gold", size: 10 },
+            { x: 11, y: 48, nums: "99977888", class: "armor-dark", size: 10 },
+            { x: 10, y: 51, nums: "999778888", class: "armor-gold", size: 9 },
+            { x: 9, y: 54, nums: "9997778888", class: "armor-gold", size: 9 },
+            { x: 8, y: 57, nums: "11177788", class: "armor-red", size: 8 },
+            { x: 7, y: 60, nums: "997778888", class: "armor-gold", size: 9 },
+            { x: 6, y: 63, nums: "9977788888", class: "armor-dark", size: 9 },
+            { x: 5, y: 66, nums: "99777888888", class: "armor-gold", size: 8 },
+            
+            // Кулак левый
+            { x: 3, y: 69, nums: "888888888", class: "armor-highlight", size: 10 },
+            { x: 2, y: 71, nums: "99977779999", class: "armor-gold", size: 10 },
+            { x: 3, y: 73, nums: "997777799", class: "armor-gold", size: 10 },
+            
+            // Руки - правая
+            { x: 75, y: 42, nums: "88999", class: "armor-gold", size: 10 },
+            { x: 76, y: 45, nums: "8877999", class: "armor-gold", size: 10 },
+            { x: 77, y: 48, nums: "88877999", class: "armor-dark", size: 10 },
+            { x: 78, y: 51, nums: "888877999", class: "armor-gold", size: 9 },
+            { x: 79, y: 54, nums: "8888777999", class: "armor-gold", size: 9 },
+            { x: 80, y: 57, nums: "88877711", class: "armor-red", size: 8 },
+            { x: 81, y: 60, nums: "888877799", class: "armor-gold", size: 9 },
+            { x: 82, y: 63, nums: "8888877799", class: "armor-dark", size: 9 },
+            { x: 83, y: 66, nums: "88888877799", class: "armor-gold", size: 8 },
+            
+            // Кулак правый
+            { x: 84, y: 69, nums: "888888888", class: "armor-highlight", size: 10 },
+            { x: 84, y: 71, nums: "99977779999", class: "armor-gold", size: 10 },
+            { x: 85, y: 73, nums: "997777799", class: "armor-gold", size: 10 },
+            
+            // Пояс
+            { x: 35, y: 71, nums: "8888888888888888", class: "armor-highlight", size: 10 },
+            { x: 34, y: 73, nums: "999777777777779999", class: "armor-gold", size: 9 },
+            
+            // Ноги - левая
+            { x: 32, y: 75, nums: "888888", class: "armor-highlight", size: 10 },
+            { x: 30, y: 78, nums: "99977799", class: "armor-gold", size: 10 },
+            { x: 29, y: 81, nums: "997777799", class: "armor-dark", size: 10 },
+            { x: 28, y: 84, nums: "9977777799", class: "armor-gold", size: 9 },
+            { x: 27, y: 87, nums: "99777777799", class: "armor-gold", size: 9 },
+            { x: 26, y: 90, nums: "997777777799", class: "armor-dark", size: 8 },
+            { x: 26, y: 93, nums: "88888888888", class: "armor-highlight", size: 9 },
+            
+            // Ноги - правая
+            { x: 56, y: 75, nums: "888888", class: "armor-highlight", size: 10 },
+            { x: 57, y: 78, nums: "99977799", class: "armor-gold", size: 10 },
+            { x: 58, y: 81, nums: "997777799", class: "armor-dark", size: 10 },
+            { x: 59, y: 84, nums: "9977777799", class: "armor-gold", size: 9 },
+            { x: 60, y: 87, nums: "99777777799", class: "armor-gold", size: 9 },
+            { x: 61, y: 90, nums: "997777777799", class: "armor-dark", size: 8 },
+            { x: 60, y: 93, nums: "88888888888", class: "armor-highlight", size: 9 },
+            
+            // Пар/энергия
+            { x: 20, y: 25, nums: "000", class: "steam", size: 8, delay: 0 },
+            { x: 75, y: 25, nums: "000", class: "steam", size: 8, delay: 0.5 },
+            { x: 30, y: 35, nums: "00", class: "steam", size: 7, delay: 1 },
+            { x: 65, y: 35, nums: "00", class: "steam", size: 7, delay: 1.5 },
+        ];
 
-        fillHeart('heart1', 280);
-        fillHeart('heart2', 260);
-        fillHeart('heart3', 240);
-        fillHeart('heart4', 250);
-        fillHeart('heart5', 230);
+        const canvas = document.getElementById('titanCanvas');
+        const particles = document.getElementById('particles');
 
-        // Частицы
-        function createParticle() {
-            const particles = document.getElementById('particles');
+        // Создание титана
+        titanMap.forEach((part, index) => {
+            const chars = part.nums.split('');
+            chars.forEach((char, charIndex) => {
+                const digit = document.createElement('span');
+                digit.className = `digit ${part.class}`;
+                digit.textContent = char;
+                digit.style.left = `${part.x + charIndex * (part.size * 0.6)}%`;
+                digit.style.top = `${part.y}%`;
+                digit.style.fontSize = `${part.size}px`;
+                digit.style.animationDelay = `${(index * 0.05) + (charIndex * 0.02)}s`;
+                
+                if (part.delay !== undefined) {
+                    digit.style.animationDelay = `${part.delay}s`;
+                }
+                
+                canvas.appendChild(digit);
+            });
+        });
+
+        // Фоновые частицы
+        for (let i = 0; i < 30; i++) {
             const particle = document.createElement('span');
             particle.className = 'particle';
-            particle.textContent = Math.random() > 0.6 ? '1' : '0';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDuration = (4 + Math.random() * 4) + 's';
-            particle.style.fontSize = (10 + Math.random() * 8) + 'px';
+            particle.textContent = Math.floor(Math.random() * 10);
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.fontSize = `${8 + Math.random() * 6}px`;
+            particle.style.animationDelay = `${Math.random() * 4}s`;
+            particle.style.animationDuration = `${3 + Math.random() * 3}s`;
             particles.appendChild(particle);
-            setTimeout(function() { particle.remove(); }, 8000);
         }
 
-        setInterval(createParticle, 500);
-        for (let i = 0; i < 20; i++) setTimeout(createParticle, i * 100);
-
-        // Динамическое обновление битов
-        setInterval(function() {
-            const bits = document.querySelectorAll('.bit');
-            for (let i = 0; i < 3; i++) {
-                const randomBit = bits[Math.floor(Math.random() * bits.length)];
-                if (randomBit) {
-                    const isOne = randomBit.textContent === '1';
-                    randomBit.textContent = isOne ? '0' : '1';
-                    randomBit.className = isOne ? 'bit zero' : 'bit';
+        // Интерактивность - эффект следования мыши
+        document.addEventListener('mousemove', (e) => {
+            const digits = document.querySelectorAll('.digit');
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+            
+            digits.forEach(digit => {
+                const digitX = parseFloat(digit.style.left) / 100;
+                const digitY = parseFloat(digit.style.top) / 100;
+                const distance = Math.sqrt(Math.pow(x - digitX, 2) + Math.pow(y - digitY, 2));
+                
+                if (distance < 0.15) {
+                    const intensity = 1 - (distance / 0.15);
+                    digit.style.textShadow = `0 0 ${20 * intensity}px currentColor, 0 0 ${40 * intensity}px currentColor`;
                 }
-            }
-        }, 80);
-
-        // Клик — взрыв символов
-        document.getElementById('heart3d').addEventListener('click', function(e) {
-            const symbols = ['❤', '1', '0', '♥', '💗'];
-            for (let i = 0; i < 20; i++) {
-                setTimeout(function() {
-                    const el = document.createElement('div');
-                    el.className = 'click-burst';
-                    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                    el.style.left = e.clientX + (Math.random() - 0.5) * 100 + 'px';
-                    el.style.top = e.clientY + (Math.random() - 0.5) * 100 + 'px';
-                    el.style.color = '#ff6b81';
-                    document.body.appendChild(el);
-                    setTimeout(function() { el.remove(); }, 800);
-                }, i * 30);
-            }
+            });
         });
 
-        // Интерактивное вращение мышью
-        let mouseX = 0, mouseY = 0;
-        document.addEventListener('mousemove', function(e) {
-            mouseX = (e.clientX / window.innerWidth - 0.5) * 20;
-            mouseY = (e.clientY / window.innerHeight - 0.5) * 20;
-        });
-
-        const heart3d = document.getElementById('heart3d');
-        let currentX = 0, currentY = 0;
-
-        function animateRotation() {
-            currentX += (mouseY - currentX) * 0.05;
-            currentY += (mouseX - currentY) * 0.05;
-            heart3d.style.transform = 'rotateX(' + currentX + 'deg) rotateY(' + currentY + 'deg)';
-            requestAnimationFrame(animateRotation);
-        }
-
-        // Раскомментируй следующую строку для управления мышью вместо автовращения:
-        // animateRotation();
+        // Периодическое мерцание глаз
+        setInterval(() => {
+            const eyes = document.querySelectorAll('.eye');
+            eyes.forEach(eye => {
+                eye.style.opacity = '0.3';
+                setTimeout(() => {
+                    eye.style.opacity = '1';
+                }, 100);
+            });
+        }, 3000);
     </script>
 </body>
 </html>
