@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Armored Titan | Digital Art</title>
+    <title>鎧の巨人 | Armored Titan</title>
     <style>
         * {
             margin: 0;
@@ -12,378 +12,306 @@
         }
 
         body {
-            background: #0a0a0f;
+            background: #0a0705;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Courier New', monospace;
             overflow: hidden;
         }
 
         .container {
             position: relative;
-            width: 600px;
-            height: 800px;
         }
 
-        .titan-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        canvas {
+            display: block;
         }
 
-        .digit {
-            position: absolute;
-            font-weight: bold;
-            text-shadow: 0 0 10px currentColor;
-            animation: pulse 2s ease-in-out infinite;
-            transition: all 0.3s ease;
-        }
-
-        .digit:hover {
-            transform: scale(1.5);
-            text-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
-        }
-
-        /* Цветовые классы для брони */
-        .armor-gold {
-            color: #d4a574;
-            text-shadow: 0 0 8px #d4a574, 0 0 15px #8b6914;
-        }
-
-        .armor-dark {
-            color: #4a3728;
-            text-shadow: 0 0 5px #4a3728;
-        }
-
-        .armor-highlight {
-            color: #f5d79e;
-            text-shadow: 0 0 12px #f5d79e, 0 0 25px #d4a574;
-        }
-
-        .armor-red {
-            color: #8b0000;
-            text-shadow: 0 0 10px #ff0000, 0 0 20px #8b0000;
-        }
-
-        .armor-shadow {
-            color: #1a1a1a;
-            text-shadow: 0 0 3px #333;
-        }
-
-        .eye {
-            color: #00ff88;
-            text-shadow: 0 0 15px #00ff88, 0 0 30px #00ff88, 0 0 45px #00ff88;
-            animation: eyeGlow 1.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
-        }
-
-        @keyframes eyeGlow {
-            0% { 
-                text-shadow: 0 0 15px #00ff88, 0 0 30px #00ff88;
-                transform: scale(1);
-            }
-            100% { 
-                text-shadow: 0 0 25px #00ff88, 0 0 50px #00ff88, 0 0 75px #00ff88;
-                transform: scale(1.1);
-            }
-        }
-
-        @keyframes steam {
-            0% { opacity: 0; transform: translateY(0) scale(1); }
-            50% { opacity: 0.6; }
-            100% { opacity: 0; transform: translateY(-30px) scale(1.5); }
-        }
-
-        .steam {
-            color: #ffffff;
-            animation: steam 2s ease-out infinite;
-        }
-
-        /* Фоновые эффекты */
-        .bg-particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            color: #d4a574;
-            opacity: 0.3;
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
-            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
-        }
-
-        /* Заголовок */
         .title {
             position: absolute;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            color: #d4a574;
-            font-size: 14px;
-            letter-spacing: 8px;
-            text-transform: uppercase;
+            color: #c9a227;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            letter-spacing: 5px;
             opacity: 0.7;
         }
 
-        /* Сканирующая линия */
-        .scan-line {
+        .glow {
             position: absolute;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #d4a574, transparent);
-            animation: scan 3s linear infinite;
-            opacity: 0.5;
-        }
-
-        @keyframes scan {
-            0% { top: 0; }
-            100% { top: 100%; }
-        }
-
-        /* Рамка */
-        .frame {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 1px solid #d4a57430;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 400px;
+            background: radial-gradient(ellipse, rgba(201, 162, 39, 0.1) 0%, transparent 70%);
             pointer-events: none;
+            animation: glowPulse 3s ease-in-out infinite;
         }
 
-        .frame::before,
-        .frame::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #d4a574;
-        }
-
-        .frame::before {
-            top: -1px;
-            left: -1px;
-            border-right: none;
-            border-bottom: none;
-        }
-
-        .frame::after {
-            bottom: -1px;
-            right: -1px;
-            border-left: none;
-            border-top: none;
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="frame"></div>
-        <div class="scan-line"></div>
-        <div class="titan-canvas" id="titanCanvas"></div>
-        <div class="bg-particles" id="particles"></div>
-        <div class="title">鎧の巨人 • Armored Titan</div>
+        <div class="glow"></div>
+        <canvas id="titanCanvas"></canvas>
+        <div class="title">鎧の巨人 ・ REINER BRAUN</div>
     </div>
 
     <script>
-        // Карта Бронированного Титана
-        const titanMap = [
-            // Голова - шлем
-            { x: 50, y: 5, nums: "88888888", class: "armor-highlight", size: 12 },
-            { x: 47, y: 7, nums: "8899998888", class: "armor-gold", size: 11 },
-            { x: 45, y: 9, nums: "899777799988", class: "armor-gold", size: 10 },
-            { x: 44, y: 11, nums: "89977777799988", class: "armor-gold", size: 10 },
-            { x: 43, y: 13, nums: "8997777777799988", class: "armor-dark", size: 10 },
-            
-            // Лицо
-            { x: 44, y: 15, nums: "997", class: "armor-gold", size: 10 },
-            { x: 56, y: 15, nums: "799", class: "armor-gold", size: 10 },
-            { x: 48, y: 15, nums: "00", class: "eye", size: 12 },
-            { x: 54, y: 15, nums: "00", class: "eye", size: 12 },
-            
-            { x: 45, y: 17, nums: "9977777777799", class: "armor-dark", size: 10 },
-            { x: 47, y: 19, nums: "77^^^^77", class: "armor-shadow", size: 9 },
-            { x: 46, y: 21, nums: "997777777799", class: "armor-gold", size: 10 },
-            { x: 48, y: 23, nums: "99999999", class: "armor-highlight", size: 10 },
-            
-            // Шея
-            { x: 47, y: 26, nums: "11111111", class: "armor-red", size: 8 },
-            { x: 46, y: 28, nums: "1177777711", class: "armor-dark", size: 8 },
-            { x: 45, y: 30, nums: "117777777711", class: "armor-gold", size: 9 },
-            
-            // Плечи - левое
-            { x: 25, y: 32, nums: "888888", class: "armor-highlight", size: 14 },
-            { x: 22, y: 34, nums: "8899999988", class: "armor-gold", size: 13 },
-            { x: 20, y: 36, nums: "899777777998", class: "armor-gold", size: 12 },
-            { x: 18, y: 38, nums: "89977777777998", class: "armor-dark", size: 11 },
-            { x: 17, y: 40, nums: "8997777777777998", class: "armor-gold", size: 10 },
-            
-            // Плечи - правое
-            { x: 62, y: 32, nums: "888888", class: "armor-highlight", size: 14 },
-            { x: 62, y: 34, nums: "8899999988", class: "armor-gold", size: 13 },
-            { x: 63, y: 36, nums: "899777777998", class: "armor-gold", size: 12 },
-            { x: 64, y: 38, nums: "89977777777998", class: "armor-dark", size: 11 },
-            { x: 64, y: 40, nums: "8997777777777998", class: "armor-gold", size: 10 },
-            
-            // Грудь - бронепластины
-            { x: 35, y: 33, nums: "8888888888888888", class: "armor-highlight", size: 11 },
-            { x: 33, y: 36, nums: "99977777777777779999", class: "armor-gold", size: 10 },
-            { x: 32, y: 39, nums: "9977777711117777779999", class: "armor-gold", size: 10 },
-            { x: 31, y: 42, nums: "997777711111117777799", class: "armor-dark", size: 10 },
-            { x: 30, y: 45, nums: "9977771111111111777799", class: "armor-gold", size: 10 },
-            { x: 32, y: 48, nums: "99777111111111177799", class: "armor-gold", size: 10 },
-            { x: 33, y: 51, nums: "997771111111117799", class: "armor-dark", size: 10 },
-            { x: 35, y: 54, nums: "9977111111117799", class: "armor-gold", size: 10 },
-            
-            // Пресс - сегменты брони
-            { x: 38, y: 57, nums: "888888888888", class: "armor-highlight", size: 9 },
-            { x: 37, y: 59, nums: "99777777779999", class: "armor-gold", size: 9 },
-            { x: 38, y: 61, nums: "9977777777999", class: "armor-dark", size: 9 },
-            { x: 39, y: 63, nums: "997777777799", class: "armor-gold", size: 9 },
-            { x: 38, y: 65, nums: "88888888888888", class: "armor-highlight", size: 8 },
-            { x: 37, y: 67, nums: "9977777777779999", class: "armor-gold", size: 8 },
-            { x: 38, y: 69, nums: "99777777777999", class: "armor-dark", size: 8 },
-            
-            // Руки - левая
-            { x: 15, y: 42, nums: "99988", class: "armor-gold", size: 10 },
-            { x: 13, y: 45, nums: "9997788", class: "armor-gold", size: 10 },
-            { x: 11, y: 48, nums: "99977888", class: "armor-dark", size: 10 },
-            { x: 10, y: 51, nums: "999778888", class: "armor-gold", size: 9 },
-            { x: 9, y: 54, nums: "9997778888", class: "armor-gold", size: 9 },
-            { x: 8, y: 57, nums: "11177788", class: "armor-red", size: 8 },
-            { x: 7, y: 60, nums: "997778888", class: "armor-gold", size: 9 },
-            { x: 6, y: 63, nums: "9977788888", class: "armor-dark", size: 9 },
-            { x: 5, y: 66, nums: "99777888888", class: "armor-gold", size: 8 },
-            
-            // Кулак левый
-            { x: 3, y: 69, nums: "888888888", class: "armor-highlight", size: 10 },
-            { x: 2, y: 71, nums: "99977779999", class: "armor-gold", size: 10 },
-            { x: 3, y: 73, nums: "997777799", class: "armor-gold", size: 10 },
-            
-            // Руки - правая
-            { x: 75, y: 42, nums: "88999", class: "armor-gold", size: 10 },
-            { x: 76, y: 45, nums: "8877999", class: "armor-gold", size: 10 },
-            { x: 77, y: 48, nums: "88877999", class: "armor-dark", size: 10 },
-            { x: 78, y: 51, nums: "888877999", class: "armor-gold", size: 9 },
-            { x: 79, y: 54, nums: "8888777999", class: "armor-gold", size: 9 },
-            { x: 80, y: 57, nums: "88877711", class: "armor-red", size: 8 },
-            { x: 81, y: 60, nums: "888877799", class: "armor-gold", size: 9 },
-            { x: 82, y: 63, nums: "8888877799", class: "armor-dark", size: 9 },
-            { x: 83, y: 66, nums: "88888877799", class: "armor-gold", size: 8 },
-            
-            // Кулак правый
-            { x: 84, y: 69, nums: "888888888", class: "armor-highlight", size: 10 },
-            { x: 84, y: 71, nums: "99977779999", class: "armor-gold", size: 10 },
-            { x: 85, y: 73, nums: "997777799", class: "armor-gold", size: 10 },
-            
-            // Пояс
-            { x: 35, y: 71, nums: "8888888888888888", class: "armor-highlight", size: 10 },
-            { x: 34, y: 73, nums: "999777777777779999", class: "armor-gold", size: 9 },
-            
-            // Ноги - левая
-            { x: 32, y: 75, nums: "888888", class: "armor-highlight", size: 10 },
-            { x: 30, y: 78, nums: "99977799", class: "armor-gold", size: 10 },
-            { x: 29, y: 81, nums: "997777799", class: "armor-dark", size: 10 },
-            { x: 28, y: 84, nums: "9977777799", class: "armor-gold", size: 9 },
-            { x: 27, y: 87, nums: "99777777799", class: "armor-gold", size: 9 },
-            { x: 26, y: 90, nums: "997777777799", class: "armor-dark", size: 8 },
-            { x: 26, y: 93, nums: "88888888888", class: "armor-highlight", size: 9 },
-            
-            // Ноги - правая
-            { x: 56, y: 75, nums: "888888", class: "armor-highlight", size: 10 },
-            { x: 57, y: 78, nums: "99977799", class: "armor-gold", size: 10 },
-            { x: 58, y: 81, nums: "997777799", class: "armor-dark", size: 10 },
-            { x: 59, y: 84, nums: "9977777799", class: "armor-gold", size: 9 },
-            { x: 60, y: 87, nums: "99777777799", class: "armor-gold", size: 9 },
-            { x: 61, y: 90, nums: "997777777799", class: "armor-dark", size: 8 },
-            { x: 60, y: 93, nums: "88888888888", class: "armor-highlight", size: 9 },
-            
-            // Пар/энергия
-            { x: 20, y: 25, nums: "000", class: "steam", size: 8, delay: 0 },
-            { x: 75, y: 25, nums: "000", class: "steam", size: 8, delay: 0.5 },
-            { x: 30, y: 35, nums: "00", class: "steam", size: 7, delay: 1 },
-            { x: 65, y: 35, nums: "00", class: "steam", size: 7, delay: 1.5 },
-        ];
-
         const canvas = document.getElementById('titanCanvas');
-        const particles = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
 
-        // Создание титана
-        titanMap.forEach((part, index) => {
-            const chars = part.nums.split('');
-            chars.forEach((char, charIndex) => {
-                const digit = document.createElement('span');
-                digit.className = `digit ${part.class}`;
-                digit.textContent = char;
-                digit.style.left = `${part.x + charIndex * (part.size * 0.6)}%`;
-                digit.style.top = `${part.y}%`;
-                digit.style.fontSize = `${part.size}px`;
-                digit.style.animationDelay = `${(index * 0.05) + (charIndex * 0.02)}s`;
-                
-                if (part.delay !== undefined) {
-                    digit.style.animationDelay = `${part.delay}s`;
-                }
-                
-                canvas.appendChild(digit);
-            });
-        });
+        const WIDTH = 600;
+        const HEIGHT = 750;
+        const CELL = 6;
 
-        // Фоновые частицы
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('span');
-            particle.className = 'particle';
-            particle.textContent = Math.floor(Math.random() * 10);
-            particle.style.left = `${Math.random() * 100}%`;
-            particle.style.top = `${Math.random() * 100}%`;
-            particle.style.fontSize = `${8 + Math.random() * 6}px`;
-            particle.style.animationDelay = `${Math.random() * 4}s`;
-            particle.style.animationDuration = `${3 + Math.random() * 3}s`;
-            particles.appendChild(particle);
+        canvas.width = WIDTH;
+        canvas.height = HEIGHT;
+
+        // Цветовая палитра Бронированного Титана
+        const colors = {
+            plateLight: '#e8d068',
+            plate: '#c9a227',
+            plateMid: '#a68520',
+            plateDark: '#8b6914',
+            plateShadow: '#5c4a1f',
+            plateDeep: '#3d2e0a',
+            muscle: '#b83030',
+            muscleDark: '#8b2323',
+            muscleDeep: '#5c1515',
+            eye: '#90EE90',
+            eyeGlow: '#32CD32',
+            teeth: '#f0f0e0',
+            outline: '#1a1005',
+            bg: '#0a0705'
+        };
+
+        // Карта титана - каждое число = тип цвета
+        // 0=пусто, 1=plateLight, 2=plate, 3=plateMid, 4=plateDark, 5=plateShadow
+        // 6=muscle, 7=muscleDark, 8=eye, 9=teeth, A=outline
+
+        const titanData = `
+................................................................................
+................................................................................
+.............................1111111111.........................................
+..........................111222222222111.......................................
+........................11222233333332221111....................................
+......................1122233333333333322221....................................
+.....................112233333333333333322211...................................
+....................11223333333333333333222111..................................
+...................1122333333444444333333221111.................................
+..................112233334444444444333332211111................................
+.................11223334444444444444333322111111...............................
+................1122333444455555554443333221111111..............................
+...............112233344455555555544433322111111111.............................
+..............11223344445555555555444333221111111111............................
+.............1122334444555555555554443332211..111111............................
+............112233444455555555555544433221.....11111............................
+...........11223344445555...5555554443322.......1111............................
+..........112233444555.........555444332........1111............................
+..........11223344455...88888...5544332.........1111............................
+..........1122344455...8888888...544332.........1111............................
+..........112234445....8888888....44332.........1111............................
+...........1123445.....8888888.....4332.........111.............................
+...........112345......8888888......332.........111.............................
+............1234.......8888888.......32.........11..............................
+............123........8888888........2.........11..............................
+.............12........8888888.........2........1...............................
+..............2........8888888.........2........1...............................
+..............2.........88888..........2........................................
+...............2.........666...........2........................................
+................2.......66666.........2.........................................
+.................2......66666........2..........................................
+..................2....6666666......2...........................................
+...................2...6666666.....2............................................
+....................2..6777776....2.............................................
+.....................2.6777776...2..............................................
+......................26677766.2................................................
+.......................667776..2................................................
+.....1111111111111111116677761111111111111111111................................
+....11222222222222222226677762222222222222222211................................
+...1122333333333333333366776633333333333333332211...............................
+..112233333333333333336677766333333333333333322111..............................
+..11223333344444443333667776633334444444333333221111............................
+.1122333344444444433366776663334444444443333332211111...........................
+.112233344444455444336677666333444554444433333221111111.........................
+11223334444455554443366766633344455554444333322111111111........................
+1122333444455555444336766633344455555444433322111...11111.......................
+112233344455555544436676663344455555544443322111......1111......................
+11223344445555554443667666344455555554444332111........111......................
+1122334444555555444366766344455555555444433211..........11......................
+112233444555555544436676344555555555544433211............1......................
+11223344455555554443667344555555555554443321.....................................
+1122334445555555444366344555555555554443321......................................
+112233444555555544436344555.5555555544433211.....................................
+11223344455555544443644555...555555544433211.....................................
+1122334445555554444364455.....55555544433211....................................
+112233444555554444436445.......5555544433211....................................
+11223344455555444443645.........555544433211....................................
+1122334445555444443364...........55544433211....................................
+112233444555444443336.............5544433211....................................
+11223344455444443333...............544433211....................................
+1122334445444443333.................44433211....................................
+112233444444443333...................4433211....................................
+11223344444443333.....................433211....................................
+1122334444443333.......................33211....................................
+112233444443333.........................3211....................................
+11223344443333...........................211....................................
+1122334443333.............................11....................................
+112233443333...............................1....................................
+11223343333.....................................................................
+1122333333......................................
+112233333.......................................
+11223333........................................
+1122333.........................................
+112233..........................................
+11223...........................................
+1122............................................
+112.............................................
+11..............................................
+1...............................................
+`;
+
+        function getColor(char) {
+            switch(char) {
+                case '1': return colors.plateLight;
+                case '2': return colors.plate;
+                case '3': return colors.plateMid;
+                case '4': return colors.plateDark;
+                case '5': return colors.plateShadow;
+                case '6': return colors.muscle;
+                case '7': return colors.muscleDark;
+                case '8': return colors.eye;
+                case '9': return colors.teeth;
+                default: return null;
+            }
         }
 
-        // Интерактивность - эффект следования мыши
-        document.addEventListener('mousemove', (e) => {
-            const digits = document.querySelectorAll('.digit');
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width;
-            const y = (e.clientY - rect.top) / rect.height;
-            
-            digits.forEach(digit => {
-                const digitX = parseFloat(digit.style.left) / 100;
-                const digitY = parseFloat(digit.style.top) / 100;
-                const distance = Math.sqrt(Math.pow(x - digitX, 2) + Math.pow(y - digitY, 2));
-                
-                if (distance < 0.15) {
-                    const intensity = 1 - (distance / 0.15);
-                    digit.style.textShadow = `0 0 ${20 * intensity}px currentColor, 0 0 ${40 * intensity}px currentColor`;
+        function getNumber(char) {
+            switch(char) {
+                case '1': return '8';
+                case '2': return '9';
+                case '3': return '7';
+                case '4': return '6';
+                case '5': return '5';
+                case '6': return '1';
+                case '7': return '0';
+                case '8': return '0';
+                case '9': return '8';
+                default: return '';
+            }
+        }
+
+        let time = 0;
+        const particles = [];
+
+        // Создаём частицы пара
+        for (let i = 0; i < 20; i++) {
+            particles.push({
+                x: WIDTH / 2 + (Math.random() - 0.5) * 200,
+                y: HEIGHT * 0.3 + Math.random() * 100,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: -Math.random() * 1 - 0.5,
+                life: Math.random(),
+                maxLife: 1,
+                char: Math.floor(Math.random() * 10).toString()
+            });
+        }
+
+        function draw() {
+            ctx.fillStyle = colors.bg;
+            ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+            const lines = titanData.trim().split('\n');
+            const offsetX = (WIDTH - lines[0].length * CELL) / 2;
+            const offsetY = 20;
+
+            ctx.font = `bold ${CELL + 2}px Courier New`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Рисуем титана
+            lines.forEach((line, y) => {
+                for (let x = 0; x < line.length; x++) {
+                    const char = line[x];
+                    const color = getColor(char);
+                    
+                    if (color) {
+                        const px = offsetX + x * CELL + CELL / 2;
+                        const py = offsetY + y * CELL + CELL / 2;
+                        
+                        // Добавляем вариацию яркости
+                        const brightness = 0.9 + Math.sin(time * 0.02 + x * 0.1 + y * 0.1) * 0.1;
+                        
+                        // Свечение для глаз
+                        if (char === '8') {
+                            const glowSize = 15 + Math.sin(time * 0.1) * 5;
+                            const gradient = ctx.createRadialGradient(px, py, 0, px, py, glowSize);
+                            gradient.addColorStop(0, 'rgba(144, 238, 144, 0.8)');
+                            gradient.addColorStop(0.5, 'rgba(50, 205, 50, 0.3)');
+                            gradient.addColorStop(1, 'transparent');
+                            ctx.fillStyle = gradient;
+                            ctx.fillRect(px - glowSize, py - glowSize, glowSize * 2, glowSize * 2);
+                        }
+
+                        // Свечение для мышц
+                        if (char === '6' || char === '7') {
+                            const glowSize = 8 + Math.sin(time * 0.05 + y * 0.2) * 2;
+                            const gradient = ctx.createRadialGradient(px, py, 0, px, py, glowSize);
+                            gradient.addColorStop(0, 'rgba(184, 48, 48, 0.4)');
+                            gradient.addColorStop(1, 'transparent');
+                            ctx.fillStyle = gradient;
+                            ctx.fillRect(px - glowSize, py - glowSize, glowSize * 2, glowSize * 2);
+                        }
+                        
+                        ctx.fillStyle = color;
+                        ctx.globalAlpha = brightness;
+                        ctx.fillText(getNumber(char), px, py);
+                        ctx.globalAlpha = 1;
+                    }
                 }
             });
-        });
 
-        // Периодическое мерцание глаз
-        setInterval(() => {
-            const eyes = document.querySelectorAll('.eye');
-            eyes.forEach(eye => {
-                eye.style.opacity = '0.3';
-                setTimeout(() => {
-                    eye.style.opacity = '1';
-                }, 100);
+            // Рисуем частицы пара
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= 0.008;
+
+                if (p.life <= 0) {
+                    p.x = WIDTH / 2 + (Math.random() - 0.5) * 150;
+                    p.y = HEIGHT * 0.35 + Math.random() * 50;
+                    p.life = p.maxLife;
+                    p.char = Math.floor(Math.random() * 10).toString();
+                }
+
+                ctx.fillStyle = `rgba(255, 200, 150, ${p.life * 0.5})`;
+                ctx.font = `${8 + (1 - p.life) * 4}px Courier New`;
+                ctx.fillText(p.char, p.x, p.y);
             });
-        }, 3000);
+
+            // Сканирующая линия
+            const scanY = (time % 300) / 300 * HEIGHT;
+            ctx.strokeStyle = 'rgba(201, 162, 39, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, scanY);
+            ctx.lineTo(WIDTH, scanY);
+            ctx.stroke();
+
+            time++;
+            requestAnimationFrame(draw);
+        }
+
+        draw();
     </script>
 </body>
 </html>
